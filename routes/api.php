@@ -48,5 +48,7 @@ Route::group(['middleware' => ['cors']], function(){
     Route::resource('activities', 'ActivityController', ['except' => [
 	    'create', 'edit'
 	]]);
+    Route::post('activities/upload', 'ActivityController@upload');
 	
 });
+
