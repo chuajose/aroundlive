@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 
-use App\Http\Requests;
+//use App\Http\Requests;
 
 use App\Activity;
 
@@ -16,13 +16,20 @@ use Illuminate\Support\Facades\Cache;
 
 use \App\Libraries\ActivityLibrary;
 
+//use \App\Http\Controllers\Input;
+
+use Illuminate\Support\Facades\Request;
+
+
+
 class ActivityController extends Controller
 {
     public function __construct()
     {
     
 
-        $this->middleware('jwt.auth', ['except' => ['index']]); //afecta a todo la class para requerir token
+        //$this->middleware('jwt.auth', ['except' => ['index']]); //afecta a todo la class para requerir token
+        $this->middleware('jwt.auth'); //afecta a todo la class para requerir token
     }
 
     /**
@@ -111,5 +118,24 @@ class ActivityController extends Controller
         $activity = Activity::find($id);
         $activity->delete();
         return response()->json(['message' => 'Activity removed']);
+    }
+
+    /**
+     * Upload the specified resource to storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function upload()
+    {
+        $imageName = "prueba";
+        $file = Request::file('file');
+        $ext = $file->getClientOriginalExtension();
+        $file->move(
+            base_path() . '/public/images/catalog/', $imageName
+        );
+
+
+        return response()->json(['message' => $ext]);
     }
 }
