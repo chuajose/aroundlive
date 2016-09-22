@@ -1,13 +1,13 @@
 <?php 
 namespace App\Libraries 
 {
-	use App\Activity;
+	use App\Conversation;
 
-    class ActivityLibrary {
+    class ConversationLibrary {
 
         public static function getActivities() {
         	$data = array();
-        	$activities = Activity::getJoinUser();
+        	$activities = Conversation::getJoinUser();
 	        if($activities){
 
 	            foreach ($activities as $key => $value) {

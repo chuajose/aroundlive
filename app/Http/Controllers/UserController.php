@@ -39,7 +39,7 @@ class UserController extends Controller
     }
 
     public function show($id){
-        $user = User::find($id);
+        $user = User::with(['conversation'])->find($id);
 
         if(!$user)return response()->json(['error' => 'not_found'], 200);
         
