@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\Cache;
 
 use \App\Libraries\ActivityLibrary;
 
-//use \App\Http\Controllers\Input;
 
+/***
+Add for user S3
+***/
 use Illuminate\Support\Facades\Request;
 
+use Illuminate\Support\Facades\Storage; 
 
 
 class ActivityController extends Controller
@@ -128,14 +131,19 @@ class ActivityController extends Controller
      */
     public function upload()
     {
-        $imageName = "prueba";
         $file = Request::file('file');
+        $imageFileName = time() . '-' . $file->getClientOriginalName();
+
+        $filePath = '/support-tickets/' . $imageFileName;
         $ext = $file->getClientOriginalExtension();
-        $file->move(
-            base_path() . '/public/images/catalog/', $imageName
-        );
+        /*$file->move(
+            base_path() . '/public/images/catalog/', $imageFileName
+        );*/
 
+        $s3 = \Storage::disk('s3');
+        $s3->put($filePath, file_get_contents($file), 'public');
+        $del = $s3->delete('support-tickets/1474638996.png');//Borrar
 
-        return response()->json(['message' => $ext]);
+        return response()->json(['message' => $del]);
     }
 }

@@ -48,6 +48,10 @@ Route::group(['middleware' => ['cors']], function(){
     Route::resource('activities', 'ActivityController', ['except' => [
 	    'create', 'edit'
 	]]);
+
+    Route::resource('conversations', 'ConversationController', ['except' => [
+        'create', 'edit'
+    ]]);
     Route::post('activities/upload', 'ActivityController@upload');
 	
 });
